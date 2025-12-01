@@ -1,0 +1,14 @@
+# Dependencias principales del proyecto
+firebase-admin>=6.0.0
+requests>=2.28.0
+
+# Nota: tkinter generalmente viene incluido con Python
+# Si no está disponible, instálalo según tu sistema:
+# - Ubuntu/Debian: sudo apt-get install python3-tk
+# - macOS: viene con Python instalado desde python.org
+# - Windows: viene incluido con Python
+
+# Dependencias opcionales para desarrollo
+# pytest>=7.0.0  # Para ejecutar tests (si se agregan más tests)
+# black>=22.0.0  # Para formateo de código (opcional)
+
