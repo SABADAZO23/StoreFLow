@@ -87,10 +87,51 @@ Si algo no funciona:
 - **"Firestore no inicializado"** → Es normal si no tienes Firebase. La app funciona igual.
 - **"No puedo iniciar sesión"** → Asegúrate de haber creado una cuenta primero.
 
-## Notas finales
+## Casos de uso
 
-Este proyecto fue hecho para aprender POO y manejo de bases de datos. Si encuentras algún bug o quieres mejorar algo, siéntete libre de hacerlo. El código es tuyo para usar como quieras.
+1) Gestión de tiendas
+- Cómo: Implementado en `StoreFlow/ui/views_stores.py` (listas, detalles, seleccionar tienda activa, crear/editar). El modelo de tiendas se persiste mediante los clientes en `base_datos/`.
+- Por qué: Permite al tendero ver dónde están ubicadas sus sucursales, editar datos de contacto y seleccionar la tienda en la que opera actualmente.
 
-**Importante:** Si compartes este proyecto, recuerda quitar el archivo `configuracion/serviceAccountKey.json` si lo tienes. No quieres que tus credenciales de Firebase anden por ahí 
+2) Administración de productos (CRUD)
+- Cómo: Implementado en `StoreFlow/ui/views_products.py` y los diálogos relacionados (`dialogs_*`). Las operaciones de persistencia pasan por los clientes en `base_datos/` (Firestore o fallback en memoria).
+- Por qué: Necesario para llevar el catálogo — agregar, actualizar precios, cambiar stock y eliminar productos.
+
+3) Registro y gestión de ventas
+- Cómo: Implementado en `StoreFlow/ui/views_sales.py` con diálogo para registrar ventas y funciones para listar/eliminar ventas. Las operaciones de I/O se ejecutan en hilos en segundo plano para evitar bloquear la UI.
+- Por qué: Permite al tendero registrar cada transacción y mantener un historial de ventas vinculadas a productos y tiendas.
+
+4) Enriquecimiento de historial de ventas (product_name persistente)
+- Cómo: Al registrar ventas se guarda `product_name` además de `product_id`; si faltaba, las vistas y el proceso de métricas intentan enriquecerlo cruzando con la lista de productos.
+- Por qué: Garantiza que las ventas antiguas sigan siendo legibles aunque cambie el catálogo (mejor UX para revisar ventas previas).
+
+5) Visualización de métricas comerciales
+- Cómo: Implementado en `StoreFlow/ui/views_metrics.py`. Calcula ingresos totales, cantidad de ventas, promedio por venta y top productos usando utilidades de servicio (`calculate_revenue`, `get_top_products`, etc.). Si no hay datos muestra un modo demo con instrucciones.
+- Por qué: Da al tendero una vista rápida de la salud del negocio y productos más vendidos — útil para decisiones de reposición y precio.
+
+6) Autenticación y sesiones
+- Cómo: Módulos en `autenticacion/` (`autenticacion.py`, `seguridad.py`, `sessionmanager.py`) proporcionan login, roles y gestión de sesión; el backend puede usar credenciales de Firebase cuando estén disponibles.
+- Por qué: Control de acceso y separación de permisos (ej.: sólo administradores pueden modificar productos o personal).
+
+7) Persistencia con fallback (resiliencia)
+- Cómo: `base_datos/firebase_client.py` implementa un cliente para Firestore con manejo explícito de errores; el proyecto incluye un cliente fallback/in-memory que se usa cuando la conexión a Firebase falla.
+- Por qué: Permite que la aplicación siga funcionando en modo local/offline sin perder la capacidad de probar y operar (útil en comercios con conectividad poco fiable).
+
+8) Usabilidad y rendimiento (no se cuelga)
+- Cómo: Operaciones de red y disco se ejecutan en hilos (`threading.Thread`) y las actualizaciones UI se realizan con `after` del mainloop; además la barra lateral es scrollable y los diálogos informan de estado.
+- Por qué: Evita que la interfaz se congele durante cargas largas y mejora la experiencia de usuario en operaciones habituales.
+
+9) Empaquetado / distribución
+- Cómo: Scripts y configuración para PyInstaller están incluidos (build scripts). Se informó de un build local `dist/TiendaHub.exe` como ejemplo de empaquetado.
+- Por qué: Facilita la entrega del sistema al tendero sin requerir que instale Python y dependencias.
+
+Limitaciones y puntos pendientes
+- Firebase: El validador (`tools/validate_service_account.py`) reportó `invalid_scope` al intentar refrescar credenciales. Esto sugiere que la `serviceAccountKey.json` puede no corresponder al proyecto correcto o tener roles/scope incorrectos. Consecuencia: funciones en la nube pueden fallar hasta corregir este punto.
+- Repositorio remoto: El remoto `https://github.com/SABADAZO23/StoreFlow1.git` fue añadido pero en remoto sólo está `.gitignore`; se recomienda empujar el resto del código (asegurarse de no incluir secretos).
+- Splashscreen: No hay splashscreen implementado (pedido del tendero). Es fácil de añadir si se desea.
+- CI / Issues: No hay workflow CI ni issues creados automáticamente. Se puede automatizar creación de issues y pipeline.
+
+
+
 
 
