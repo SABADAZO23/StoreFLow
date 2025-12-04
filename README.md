@@ -127,9 +127,9 @@ Si algo no funciona:
 
 Limitaciones y puntos pendientes
 - Firebase: El validador (`tools/validate_service_account.py`) reportó `invalid_scope` al intentar refrescar credenciales. Esto sugiere que la `serviceAccountKey.json` puede no corresponder al proyecto correcto o tener roles/scope incorrectos. Consecuencia: funciones en la nube pueden fallar hasta corregir este punto.
-- Repositorio remoto: El remoto `https://github.com/SABADAZO23/StoreFlow1.git` fue añadido pero en remoto sólo está `.gitignore`; se recomienda empujar el resto del código (asegurarse de no incluir secretos).
 - Splashscreen: No hay splashscreen implementado (pedido del tendero). Es fácil de añadir si se desea.
-- CI / Issues: No hay workflow CI ni issues creados automáticamente. Se puede automatizar creación de issues y pipeline.
+
+
 
 
 
