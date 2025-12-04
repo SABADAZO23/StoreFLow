@@ -1,4 +1,4 @@
-# 🏪 APP Gestión de Tiendas
+# 🏪 StoreFlow
 
 ¡Hola! 👋
 
@@ -130,6 +130,7 @@ Limitaciones y puntos pendientes
 - Repositorio remoto: El remoto `https://github.com/SABADAZO23/StoreFlow1.git` fue añadido pero en remoto sólo está `.gitignore`; se recomienda empujar el resto del código (asegurarse de no incluir secretos).
 - Splashscreen: No hay splashscreen implementado (pedido del tendero). Es fácil de añadir si se desea.
 - CI / Issues: No hay workflow CI ni issues creados automáticamente. Se puede automatizar creación de issues y pipeline.
+
 
 
 
